@@ -1,0 +1,19 @@
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../services/firebaseConfig";
+
+const message_send_callback = async (url) => {
+  console.log("Profile shared:", url);
+
+  try {
+    await addDoc(collection(db, "sharedProfiles"), {
+      profileUrl: url,
+      timestamp: new Date(),
+    });
+    console.log("Share logged in Firebase!");
+  } catch (error) {
+    console.error("Error logging share:", error);
+  }
+};
+
+// Subscribe to the event
+FB.Event.subscribe("message.send", message_send_callback);
